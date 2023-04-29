@@ -28,6 +28,18 @@ function Username() {
 
     <div className="flex h-screen items-center justify-center">
       <div className={`${styles.glass} my-8`}>
+      <Toaster position='top-center' reverseOrder={false} containerStyle={{
+              position: 'relative',
+            }}
+            toastOptions={{
+              // Define default options
+              className: '',
+              duration: 2000,
+              style: {
+                background: '#991b1b',
+                color: '#fff',
+              }
+            }} ></Toaster>
         <div className="title flex flex-col items-center">
           <h4 className='text-5xl font-bold'>Hello Again!</h4>
           <span className='py-4 text-xl w-2/3 text-center text-gray-500'>
@@ -38,7 +50,6 @@ function Username() {
           <div className='profile flex justify-center py-4'>
             <img src={avatar} alt="avatar" className="h-32 w-32 rounded-full" />
           </div>
-          <Toaster position='top-center' reverseOrder={false}></Toaster>
           <div className="textbox flex flex-col items-center gap-6">
             <input {...formik.getFieldProps('username')} className={styles.textbox} type="text" placeholder='Username' />
             <button className={styles.btn} type='submit'>Let's Go</button>
