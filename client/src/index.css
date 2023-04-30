@@ -12,3 +12,7 @@ body{
     background: #dcdce6;
     background-image: url('./asset/Background.png');
 }
+
+.container{
+    overflow: hidden;
+}
