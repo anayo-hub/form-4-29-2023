@@ -7,12 +7,14 @@ client/.env
 server/.env
 /.pnp
 .pnp.jscd
+server/config.js
 
 # testing
 /coverage
 
 # production
 /build
+/checker
 
 # misc
 .DS_Store
