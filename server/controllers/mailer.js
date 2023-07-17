@@ -31,10 +31,10 @@ export const registerMail = async (req, res) => {
     product: {
       name: "SonicDevs",
       link: 'https://mailgen.js/',
-      // Custom product logo
+      // Custom product logo (imported as Base64)
       logo: {
         path: 'cid:logo-image',
-        cid: 'logo-image'
+        content: imageBase64
       },
       // Custom logo height
       logoHeight: '60px'
@@ -44,14 +44,8 @@ export const registerMail = async (req, res) => {
   let response = {
     body: {
       name: username,
-      intro: text || 'Welcome to Daily Tuition! We\'re very excited to have you on board.',
-      outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.',
-      logo: {
-        // Image block with the logo
-        path: 'cid:logo-image',
-        width: '100%',
-        align: 'center'
-      }
+      intro: `<div style="text-align: center;"><img src="cid:logo-image" alt="Company Logo" style="display: block; margin: 0 auto; max-width: 200px; max-height: 200px; margin-bottom: 20px;"></div>${text || 'Welcome to Daily Tuition! We\'re very excited to have you on board.'}`,
+      outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
     }
   };
 
@@ -79,7 +73,6 @@ export const registerMail = async (req, res) => {
       return res.status(500).json({ error });
     });
 };
-
 
 
 
