@@ -8,11 +8,14 @@ export default async function Auth(req, res, next){
         // access authorize header to validate request
         const token = req.headers.authorization.split(" ")[1];
 
-        // retrive the user details fo the logged in user
+        // // retrive the user details from the logged in user
         const decodedToken = await jwt.verify(token, ENV.JWT_SECRET);
 
+        //send user in the req property to conatin the userId, and usernme
         req.user = decodedToken;
+        // res.json(decodedToken);
 
+        //pass everything over to next function through req.user.
         next()
 
     } catch (error) {

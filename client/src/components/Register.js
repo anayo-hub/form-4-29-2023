@@ -54,13 +54,13 @@ export default function Register() {
 
           <div className="title flex flex-col items-center">
             <h4 className='text-2xl font-bold'>Register</h4>
-            <span className='py-4 text-xl w-2/3 text-center text-gray-500'>
+            <span className='py-1 text-l w-2/3 text-center text-gray-500'>
                 Happy to join you!
             </span>
           </div>
 
           <form className='py-1' onSubmit={formik.handleSubmit}>
-              <div className='profile flex justify-center py-2'>
+              <div className='profile flex justify-center'>
                   <label htmlFor="profile">
                     <img src={file || avatar} className={styles.profile_img} alt="avatar" />
                   </label>

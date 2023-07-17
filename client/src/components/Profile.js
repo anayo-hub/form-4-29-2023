@@ -64,16 +64,16 @@ export default function Profile() {
 //   if(serverError) return <h1 className='text-xl text-red-500'>{serverError.message}</h1>
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto h-screen">
 
       <Toaster position='top-center' reverseOrder={false}></Toaster>
 
-      <div className='flex justify-center items-center h-screen'>
-        <div className={`${styles.glass} ${extend.glass}`} style={{ width: "45%", paddingTop: '3em'}}>
+      <div className='flex justify-center items-center max-h-screen my-2'>
+        <div className={`${styles.glass} ${extend.glass}`} style={{ width: "45%", paddingTop: '3em', maxHeight: "95vh"}}>
 
           <div className="title flex flex-col items-center">
-            <h4 className='text-5xl font-bold'>Profile</h4>
-            <span className='py-4 text-xl w-2/3 text-center text-gray-500'>
+            <h4 className='text-3xl font-bold'>Profile</h4>
+            <span className='text-xl w-2/3 text-center text-gray-500'>
                 You can update the details.
             </span>
           </div>
