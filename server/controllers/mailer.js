@@ -1,15 +1,15 @@
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-import nodemailer from 'nodemailer';
-import Mailgen from 'mailgen';
-import fs from 'fs';
-import ENV from '../config.js';
+import { fileURLToPath } from 'url';  // Importing 'fileURLToPath' function from the 'url' module
+import { dirname, join } from 'path';  // Importing 'dirname' and 'join' functions from the 'path' module
+import nodemailer from 'nodemailer';  // Importing 'nodemailer' package
+import Mailgen from 'mailgen';  // Importing 'mailgen' package
+import fs from 'fs';  // Importing 'fs' module for file system operations
+import ENV from '../config.js';  // Importing the configuration file
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __filename = fileURLToPath(import.meta.url);  // Get the current file path
+const __dirname = dirname(__filename);  // Get the current directory path
 
-export const registerMail = async (req, res) => {
-  const { username, userEmail, text, subject } = req.body;
+export const registerMail = async (req, res) => {  // Defining an asynchronous function 'registerMail' with 'req' and 'res' parameters
+  const { username, userEmail, text, subject } = req.body;  // Extracting properties from the request body
 
   let config = {
     service: 'gmail',
@@ -17,39 +17,39 @@ export const registerMail = async (req, res) => {
       user: ENV.EMAIL,
       pass: ENV.PASSWORD
     }
-  };
+  };  // Email service configuration object
 
-  let transporter = nodemailer.createTransport(config);
+  let transporter = nodemailer.createTransport(config);  // Creating a transporter object for sending emails
 
-  const imagePath = join(__dirname, 'logo.png');
+  const imagePath = join(__dirname, 'logo.png');  // Path to the logo image file
 
-  // Read the image file and encode it as Base64
-  const imageBase64 = fs.readFileSync(imagePath, { encoding: 'base64' });
+  const imageBase64 = fs.readFileSync(imagePath, { encoding: 'base64' });  // Read the image file and encode it as Base64
 
   let MailGenerator = new Mailgen({
     theme: "default",
     product: {
       name: "SonicDevs",
       link: 'https://mailgen.js/',
-      // Custom product logo (imported as Base64)
       logo: {
         path: 'cid:logo-image',
         content: imageBase64
       },
-      // Custom logo height
       logoHeight: '60px'
     }
-  });
+  });  // Creating a new instance of Mailgen and configuring it
 
   let response = {
     body: {
       name: username,
-      intro: `<div style="text-align: center;"><img src="cid:logo-image" alt="Company Logo" style="display: block; margin: 0 auto; max-width: 200px; max-height: 200px; margin-bottom: 20px;"></div>${text || 'Welcome to Daily Tuition! We\'re very excited to have you on board.'}`,
+      intro: `<div style="text-align: center;">
+              <img src="cid:logo-image" alt="Company Logo" style="display: block; margin: 0 auto; max-width: 200px; max-height: 200px; margin-bottom: 20px;">
+              </div>
+              ${text || 'Welcome to Sonic devs! We\'re very excited to have you on board.'}`,
       outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
     }
-  };
+  };  // Email body content
 
-  let emailBody = MailGenerator.generate(response);
+  let emailBody = MailGenerator.generate(response);  // Generate the HTML body of the email
 
   let message = {
     from: ENV.EMAIL,
@@ -61,7 +61,7 @@ export const registerMail = async (req, res) => {
       path: imagePath,
       cid: 'logo-image'
     }]
-  };
+  };  // Email message details
 
   transporter.sendMail(message)
     .then(() => {
