@@ -7,22 +7,8 @@ import otpGenerator from 'otp-generator';
 
 
 /** middleware for verify user */
-// export async function verifyUser(req, res, next){
-//     try {
 
-//         const { username } = req.method == "GET" ? req.query : req.body;
-
-//         // check the user existance
-//         let exist = await UserModel.findOne({ username });
-//         if(!exist) return res.status(404).send({ error : "Can't find User!"});
-//         next();
-
-//     } catch (error) {
-//         return res.status(404).send({ error: "Authentication Error"});
-//     }
-// }
-
-export async function verifyUserExists(req, res, next) {
+export async function verifyUserExists(req, res,  next) {
   try {
     const { username } = req.method === "GET" ? req.query : req.body;
 
@@ -139,10 +125,14 @@ export async function register(req, res) {
 //   }
 
 export async function login(req, res) {
-  const { username, password } = req.body;
+  const { password } = req.body;
 
   try {
     const user = req.user; // User object attached by verifyUserExists middleware
+
+      if (!user) {
+        return res.status(404).send({ error: "Username not found" });
+      }
 
     const passwordCheck = await bcrypt.compare(password, user.password);
 
@@ -151,11 +141,14 @@ export async function login(req, res) {
     }
 
     const token = jwt.sign(
+      //first obj
       {
         userId: user._id,
         username: user.username,
       },
+      // second obj
       ENV.JWT_SECRET,
+      //third obj
       { expiresIn: "24h" }
     );
 
@@ -209,29 +202,6 @@ body: {
     profile : ''
 }
 */
-// export async function updateUser(req, res) {
-//   try {
-
-//     // const id = req.query.id;
-//      const { userId } = req.user;
-
-//     if (!userId) {
-//       return res.status(401).send({ error: "User Not Found" });
-//     }
-
-//     const userData = req.body;
-
-//     console.log(userData);
-
-//     await UserModel.updateOne({ _id: userId }, userData);
-
-//     return res.status(200).send({ message: "User data updated successfully" });
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).send({ error: "Server error" });
-//   }
-// }
-
 export async function updateUser(req, res) {
   try {
 
