@@ -28,6 +28,7 @@ export async function authenticate(username){
 export async function getUser({ username }){
     try {
         const { data } = await axios.get(`/api/user/${username}`);
+        console.log(data);
         return { data };
     } catch (error) {
         return { error : "Password doesn't Match...!"}
@@ -35,22 +36,44 @@ export async function getUser({ username }){
 }
 
 /** register user function */
-export async function registerUser(credentials){
+// export async function registerUser(credentials){
+//     try {
+//         // const response = await axios.post(`/api/register`, credentials);
+//         // console.log(response);
+
+//         const { data : { msg }, status } = await axios.post(`/api/register`, credentials);
+
+//         let { username, email } = credentials;
+
+//         /** send email */
+//         if(status === 201){
+//             await axios.post('/api/registerMail', { username, userEmail : email, text : msg})
+//         }
+
+//         return Promise.resolve(msg)
+//     } catch (error) {
+//         return Promise.reject({ error })
+//     }
+// }
+
+//better code
+export async function registerUser(credentials) {
     try {
-        const { data : { msg }, status } = await axios.post(`/api/register`, credentials);
+      const { data: { msg }, status } = await axios.post('/api/register', credentials);
+  
+      const { username, email } = credentials; // Use consistent destructuring
 
-        let { username, email } = credentials;
-
-        /** send email */
-        if(status === 201){
-            await axios.post('/api/registerMail', { username, userEmail : email, text : msg})
-        }
-
-        return Promise.resolve(msg)
+      /** send email */
+      if (status === 201) {
+        await axios.post('/api/registerMail', { username, userEmail: email, text: msg });
+      }
+  
+      return msg; // Directly return the resolved value
     } catch (error) {
-        return Promise.reject({ error })
+      throw error; // Simply throw the error, no need for Promise.reject
     }
-}
+  }
+
 
 /** login function */
 export async function verifyPassword({ username, password }){

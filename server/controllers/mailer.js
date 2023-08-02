@@ -42,7 +42,7 @@ export const registerMail = async (req, res) => {  // Defining an asynchronous f
     body: {
       name: username,
       intro: `<div style="text-align: center;">
-              <img src="cid:logo-image" alt="Company Logo" style="display: block; margin: 0 auto; max-width: 200px; max-height: 200px; margin-bottom: 20px;">
+              <img src="cid:logo-image" alt="Company Logo" style="display: block; margin: 0 auto; width: 80px; height: 80px; margin-bottom: 20px;">
               </div>
               ${text || 'Welcome to Sonic devs! We\'re very excited to have you on board.'}`,
       outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'

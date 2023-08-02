@@ -2,7 +2,6 @@ import UserModel from '../model/User.model.js'
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ENV from '../config.js'
-import {registerMail} from "../controllers/mailer.js"
 import otpGenerator from 'otp-generator';
 
 
@@ -18,7 +17,7 @@ export async function verifyUserExists(req, res,  next) {
       return res.status(404).send({ error: "User not found" });
     }
 
-    req.user = user; // Attach the user object to the request
+    req.user = user; // Attach the {username} user object to the request
     next();
 
   } catch (error) {
@@ -48,18 +47,18 @@ export async function register(req, res) {
       const existUsername = await UserModel.findOne({ username });
       //if there is a similar user
       if (existUsername) {
-        return res.status(400).send({ error: "Please use unique username" });
+        return res.status(400).send({ error: "User already exist" });
       }
 
       // check for existing email
       const existEmail = await UserModel.findOne({ email });
       if (existEmail) {
-        return res.status(400).send({ error: "Please use unique Email" });
+        return res.status(400).send({ error: "email already taken, please check your mail" });
       }
 
       // hash the password
       if(!password){
-        return res.status(400).send({ error: "Please enter an email" });
+        return res.status(400).send({ error: "Please enter a password" });
       } else{
         //encript the password
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -140,10 +139,11 @@ export async function login(req, res) {
       return res.status(400).send({ error: "Password does not match" });
     }
 
+    //if everything passes then create a jwt
     const token = jwt.sign(
       //first obj
       {
-        userId: user._id,
+        userId: user._id, // user._id the one i get from mongoDB
         username: user.username,
       },
       // second obj
@@ -178,8 +178,6 @@ export async function getUser(req, res) {
       const user = await UserModel.findOne({ username }).select("-password");
       // const user = await UserModel.findOne({ username }).select("username firstName lastName email");
       // const user = await UserModel.findOne({ username }).select("username");
-
-
 
       if (!user) {
         return res.status(404).send({ error: "User not found" });
